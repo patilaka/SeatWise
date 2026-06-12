@@ -1,10 +1,20 @@
+<!-- Improved by Claude Fable 5 | SeatWise - MHT-CET College Predictor -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SeatWise</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>SeatWise - MHT-CET College Predictor</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- External Libraries -->
   <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -13,60 +23,101 @@
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css"
   />
+  <link rel="stylesheet" href="style.css" />
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
 </head>
 <body>
- <div class="floating-bg bg-1"></div>
+  <!-- Floating background decorations -->
+  <div class="floating-bg bg-1"></div>
   <div class="floating-bg bg-2"></div>
-  
-  <div class="logo-container" onclick="window.open('https://github.com/ShreyasP10', '_blank')">
+
+  <!-- Developer logo badge -->
+  <div
+    class="logo-container"
+    onclick="window.open('https://github.com/ShreyasP10', '_blank')"
+    title="Developed by Shreyas Pawar"
+  >
     <div class="logo">SP</div>
   </div>
-  
+
+  <!-- Toast notification -->
   <div id="notification" class="notification">
     <i class="fas fa-exclamation-circle"></i><span></span>
   </div>
 
-  <div class="container">
+  <!-- ==================== FORM VIEW ==================== -->
+  <div class="container" id="formCard">
     <header>
-      <h1><i class="fas fa-graduation-cap"></i>Engineering College Predictor</h1>
+      <h1><i class="fas fa-graduation-cap"></i> Engineering College Predictor</h1>
       <p>Find the best engineering colleges based on your Diploma Scores</p>
     </header>
     <main>
       <div class="info-box">
         <i class="fas fa-lightbulb"></i>
-        <div>Enter your Diploma percentile/rank and preferences to find the best colleges for Direct Second Year admission</div>
+        <div>
+          Enter your Diploma percentile/rank and preferences to find the best
+          colleges for Direct Second Year admission
+        </div>
       </div>
 
-      <form id="predictorForm" onsubmit="event.preventDefault();">
+      <form id="predictorForm">
+        <!-- Seat Type -->
         <div class="form-group">
           <label><i class="fas fa-chair"></i> Seat Type:</label>
           <select id="seatType" multiple></select>
         </div>
+
+        <!-- Branch -->
         <div class="form-group">
           <label><i class="fas fa-code-branch"></i> Branch:</label>
           <select id="branch" multiple></select>
         </div>
+
+        <!-- College Type -->
         <div class="form-group">
           <label><i class="fas fa-university"></i> College Type:</label>
           <select id="collegeType" multiple></select>
         </div>
+
+        <!-- Region -->
         <div class="form-group">
           <label><i class="fas fa-map-marker-alt"></i> Region:</label>
           <select id="region" multiple></select>
         </div>
+
+        <!-- Filter By (Percentile / Rank) -->
         <div class="radio-group">
           <label><i class="fas fa-filter"></i> Filter By:</label>
           <div>
-            <label><input type="radio" name="predictType" value="percentile" checked> <i class="fas fa-percentage"></i> Percentile</label>
-            <label><input type="radio" name="predictType" value="rank"> <i class="fas fa-list-ol"></i> Rank</label>
+            <label>
+              <input type="radio" name="predictType" value="percentile" checked />
+              <i class="fas fa-percentage"></i> Percentile
+            </label>
+            <label>
+              <input type="radio" name="predictType" value="rank" />
+              <i class="fas fa-list-ol"></i> Rank
+            </label>
           </div>
         </div>
+
+        <!-- Input Value -->
         <div class="form-group">
-          <label><i class="fas fa-calculator"></i> Enter Value:</label>
-          <input type="number" id="inputValue" placeholder="Enter your percentile or rank" required />
+          <label id="inputLabel">
+            <i class="fas fa-calculator"></i> Enter Percentile:
+          </label>
+          <input
+            type="number"
+            id="inputValue"
+            placeholder="Enter your percentile or rank"
+            required
+            step="any"
+            min="0"
+          />
         </div>
+
+        <!-- Number of Colleges -->
         <div class="form-group">
           <label><i class="fas fa-building"></i> Number of Colleges:</label>
           <select id="collegeCount">
@@ -76,6 +127,8 @@
             <option value="all" selected>All Matching Colleges</option>
           </select>
         </div>
+
+        <!-- Submit -->
         <div class="form-actions">
           <button type="button" id="predictButton">
             <i class="fas fa-search"></i> Find Colleges
@@ -84,31 +137,59 @@
       </form>
     </main>
     <footer>
-      <p>© 2025 College Predictor | Data Source: CET‑CELL</p>
+      <p>&copy; 2025 College Predictor | Data Source: CET&#8209;CELL</p>
       <div class="dev-credit">Developed by Shreyas Pawar</div>
     </footer>
   </div>
 
-  <div id="resultsContainer" class="results-container" style="display:none;">
+  <!-- ==================== RESULTS VIEW ==================== -->
+  <div id="resultsContainer" class="results-container" style="display: none">
     <div class="results-header">
       <h1><i class="fas fa-university"></i> College Prediction Results</h1>
       <div class="controls">
-        <button id="downloadPdfBtn"><i class="fas fa-file-pdf"></i> Download PDF</button>
-        <button id="resetBtn"><i class="fas fa-redo"></i> New Search</button>
+        <button id="downloadPdfBtn">
+          <i class="fas fa-file-pdf"></i> Download PDF
+        </button>
+        <button id="resetBtn">
+          <i class="fas fa-redo"></i> New Search
+        </button>
       </div>
     </div>
     <main>
+      <!-- Search parameters summary -->
       <div id="searchParams" class="param-container"></div>
+
+      <!-- Quick stats -->
+      <div id="statsInfo" class="stats-info"></div>
+
+      <!-- Results toolbar -->
       <div class="results-controls">
         <div class="results-count">
-          Showing <span id="startResult">0</span> to <span id="endResult">0</span> of <span
-            id="totalResults">0</span> colleges
+          Showing <span id="startResult">0</span> to
+          <span id="endResult">0</span> of
+          <span id="totalResults">0</span> colleges
         </div>
         <div class="results-filter">
-          <input type="text" id="searchResults" placeholder="Search colleges, branches..." />
-          <button id="clearSearch"><i class="fas fa-times"></i> Clear</button>
+          <select id="sortSelect">
+            <option value="percentile-desc">
+              <i class="fas fa-sort-amount-down"></i> Percentile (High → Low)
+            </option>
+            <option value="rank-asc">
+              <i class="fas fa-sort-amount-up"></i> Rank (Low → High)
+            </option>
+          </select>
+          <input
+            type="text"
+            id="searchResults"
+            placeholder="Search colleges, branches..."
+          />
+          <button id="clearSearch">
+            <i class="fas fa-times"></i> Clear
+          </button>
         </div>
       </div>
+
+      <!-- Results table -->
       <div class="results-table-container">
         <table class="results-table">
           <thead>
@@ -124,15 +205,27 @@
           <tbody id="resultsBody"></tbody>
         </table>
       </div>
+
+      <!-- No results placeholder -->
+      <div id="noResultsMsg" class="no-results" style="display: none">
+        <i class="fas fa-search"></i>
+        <p>No colleges found matching your criteria.</p>
+        <p>Try adjusting your filters or percentile/rank value.</p>
+      </div>
+
+      <!-- Pagination -->
       <div id="pagination" class="pagination"></div>
     </main>
     <footer>
-      <p>© 2025 College Predictor | Results based on previous year cutoffs</p>
+      <p>
+        &copy; 2025 College Predictor | Results based on previous year cutoffs
+      </p>
     </footer>
   </div>
 
-
+  <!-- Choices.js Library -->
   <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+  <!-- Main Script -->
   <script src="script.js"></script>
 </body>
 </html>
